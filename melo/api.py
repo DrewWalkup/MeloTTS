@@ -23,21 +23,14 @@ class TTS(nn.Module):
                 device='auto',
                 use_hf=True,
                 config_path=None,
-                ckpt_path=None,
-                cuda_device=None):
+                ckpt_path=None):
         super().__init__()
         if device == 'auto':
             device = 'cpu'
-            if torch.cuda.is_available():
-                if cuda_device is not None:
-                    device = f'cuda:{cuda_device}'
-                else:
-                    device = 'cuda'
+            if torch.cuda.is_available(): device = 'cuda'
             if torch.backends.mps.is_available(): device = 'mps'
         if 'cuda' in device:
             assert torch.cuda.is_available()
-            if cuda_device is not None:
-                torch.cuda.set_device(cuda_device)
 
         # config_path = 
         hps = load_or_download_config(language, use_hf=use_hf, config_path=config_path)
